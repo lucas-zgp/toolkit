@@ -3,8 +3,8 @@
 #include "QScreen"
 #include "QGuiApplication"
 #include "QRect"
-
-
+#include "QApplication"
+#include "QStyle"
 
 #define MAINWINDOW_WIDTH  480
 #define MAINWINDOW_HEIGHT 320
@@ -18,12 +18,25 @@ MainWindow::MainWindow(QWidget *parent)
                       (rect.height() - MAINWINDOW_HEIGHT)/2,
                       MAINWINDOW_WIDTH,MAINWINDOW_HEIGHT);
 
-    pushButton1 = new QPushButton("pushButton1",this);
-    pushButton2 = new QPushButton("pushButton2",this);
+    pushButton1 = new QPushButton("pushButton1",this); /*实例化QPushButton对象*/
+    pushButton2 = new QPushButton("pushButton2",this); /*实例化QPushButton对象*/
+    tool_bar    = new QToolBar(this);                  /*实例化QToolBar对象*/
+    tool_button = new QToolButton(this);
 
-    pushButton1->setGeometry(this->width()/2,this->height()/2,100,100);
-    pushButton2->setGeometry(this->width()/4,this->height()/4,100,100);
+    QStyle *style = QApplication::style();
+    QIcon icon = style->standardIcon(QStyle::SP_TitleBarContextHelpButton);
 
+    tool_button->setIcon(icon);
+    tool_button->setText("Help");
+    tool_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    tool_bar->addWidget(tool_button);
+
+    /*设置控件位置*/
+    pushButton1->setGeometry(100,50,100,50);
+    pushButton2->setGeometry(100,100,100,50);
+    tool_bar->setGeometry(100,150,100,50);
+
+    /*信号与槽连接*/
     connect(pushButton1,SIGNAL(clicked()),this,SLOT(pushButton1_clicked()));
     connect(pushButton2,SIGNAL(clicked()),this,SLOT(pushButton2_clicked()));
 }
